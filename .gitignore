@@ -1,1 +1,4 @@
 *venv/
+build
+dist
+dj_gravatar.egg-info
