@@ -1,4 +1,7 @@
 *venv/
+.venv
+.vscode
 build
 dist
 dj_gravatar.egg-info
+requirements.txt
