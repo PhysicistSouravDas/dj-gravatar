@@ -76,7 +76,7 @@ The above code outputs like this:
 <!-- OR -->
 <img src="http://www.gravatar.com/avatar/[hash]?s=200&d=" alt="profile-pic">
 ```
-The argument `s=200` represents the size of the image (`size=200px`).
+The argument `s=200` represents the size of the image (`size=200px`). Default size is 80px.
 
 You can also use the following snippet to achieve the same as above:
 ```html
