@@ -1,6 +1,6 @@
 from django.template import Library
 from django.conf import settings
-from  users.settings import configure_default_settings
+from  ..settings import configure_default_settings
 
 configure_default_settings()
 
