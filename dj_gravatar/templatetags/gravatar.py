@@ -1,5 +1,6 @@
 from django.template import Library
 from django.conf import settings
+from django.utils.safestring import mark_safe
 from  ..settings import configure_default_settings
 
 configure_default_settings()
@@ -30,4 +31,4 @@ def gravatar_url(email, size=80):
 @register.simple_tag
 def gravatar(email, size=80, options=""):
     url = gravatar_url(email, size)
-    return '<img src="%s" width="%s" height="%s" %s >' % (url, size, size, options)
+    return mark_safe('<img src="%s" width="%s" height="%s" %s >' % (url, size, size, options))
