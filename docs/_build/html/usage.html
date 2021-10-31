@@ -1,0 +1,195 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Usage &#8212; dj-gravatar 0.0.2 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Welcome to dj-gravatar’s documentation!" href="index.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="usage">
+<h1>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h1>
+<p>Suppose the directory structure of your project is like this.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Django_Project
+│   db.sqlite3
+│   manage.py
+│
+├───pages
+│   │   admin.py
+│   │   apps.py
+│   │   models.py
+│   │   tests.py
+│   │   urls.py
+│   │   views.py
+│   │   __init__.py
+│   └───templates
+│       │   base.html
+│       │
+│       └───pages
+│               about.html
+│               index.html
+│
+└───Django_Project
+        asgi.py
+        settings.py
+        urls.py
+        wsgi.py
+        __init__.py
+</pre></div>
+</div>
+<p>In <code class="docutils literal notranslate"><span class="pre">Django_Project/settings.py</span></code>,
+.. code-block:: python</p>
+<blockquote>
+<div><p>…</p>
+<p>INSTALLED_APPS = [</p>
+<blockquote>
+<div><p>…</p>
+<p>‘dj_gravatar’   # NOTE: underscore(_) is used instead of hyphen(-)</p>
+<p>…</p>
+</div></blockquote>
+<p>]</p>
+<p>…</p>
+</div></blockquote>
+<p>In the Django Template (<code class="docutils literal notranslate"><span class="pre">.html</span></code> file) where you want to show the gravatar,
+.. code-block:: html</p>
+<blockquote>
+<div><p>{% load gravatar %}
+…</p>
+<p>&lt;img src=”{% gravatar_url <a class="reference external" href="mailto:'email&#37;&#52;&#48;mail&#46;com">‘email<span>&#64;</span>mail<span>&#46;</span>com</a>’ 200 %}” alt=”profile-pic”&gt;
+…</p>
+</div></blockquote>
+<p>The above code outputs like this:
+.. code-block:: html</p>
+<blockquote>
+<div><p>&lt;img src=”<a class="reference external" href="http://www.gravatar.com/avatar/267f3587edc9b64d8e80ee7eca8abbcb?s=200&amp;d=">http://www.gravatar.com/avatar/267f3587edc9b64d8e80ee7eca8abbcb?s=200&amp;d=</a>” alt=”profile-pic”&gt;
+&lt;!– OR –&gt;
+&lt;img src=”<a class="reference external" href="http://www.gravatar.com/avatar/[hash">http://www.gravatar.com/avatar/[hash</a>]?s=200&amp;d=” alt=”profile-pic”&gt;</p>
+</div></blockquote>
+<p>The argument <code class="docutils literal notranslate"><span class="pre">s=200</span></code> represents the size of the image (<code class="docutils literal notranslate"><span class="pre">size=200px</span></code>). Default size is 80px.</p>
+<p>You can also use the following snippet to achieve the same as above:
+.. code-block:: html</p>
+<blockquote>
+<div><p>{% load gravatar %}
+…
+{% gravatar <a class="reference external" href="mailto:'email&#37;&#52;&#48;mail">‘email<span>&#64;</span>mail</a>’ 200 “alt=’profile-pic’” %}
+…</p>
+</div></blockquote>
+<p>You can use any HTML attribute instead of <code class="docutils literal notranslate"><span class="pre">alt</span></code>, like <code class="docutils literal notranslate"><span class="pre">style</span></code>. But only use one optional attribute at a time, Otherwise you will get <code class="docutils literal notranslate"><span class="pre">TemplateSyntaxError</span></code>.</p>
+<p>If you want to use <code class="docutils literal notranslate"><span class="pre">https://.../</span></code> instead of the default <code class="docutils literal notranslate"><span class="pre">http://.../</span></code>, then add the following setting in your <code class="docutils literal notranslate"><span class="pre">settings.py</span></code> file.
+.. code-block:: python</p>
+<blockquote>
+<div><p>GRAVATAR_SECURE = True  # Default False</p>
+</div></blockquote>
+<p>If any email address has no matching Gravatar image, then, a default image is shown. There are the following types of default images:</p>
+<ul class="simple">
+<li><p><strong>404:</strong> do not load any image if none is associated with the email hash, instead return an HTTP 404 (File Not Found) response</p></li>
+<li><p><em>mp:</em> (mystery-person) a simple, cartoon-style silhouetted outline of a person (does not vary by email hash)</p></li>
+<li><p><em>identicon:</em> a geometric pattern based on an email hash</p></li>
+<li><p><em>monsterid:</em> a generated ‘monster’ with different colors, faces, etc</p></li>
+<li><p><em>wavatar:</em> generated faces with differing features and backgrounds</p></li>
+<li><p><em>retro:</em> awesome generated, 8-bit arcade-style pixelated faces</p></li>
+<li><p><em>robohash:</em> a generated robot with different colors, faces, etc</p></li>
+<li><p><em>blank:</em> a transparent PNG image (border added to HTML below for demonstration purposes)</p></li>
+</ul>
+<p>You can <a class="reference external" href="https://en.gravatar.com/site/implement/images/#default-image">see here</a> how each type of default image looks like.</p>
+<p>To show a particular default image out of the above, add the following setting to your <code class="docutils literal notranslate"><span class="pre">settings.py</span></code> file.
+.. code-block:: python</p>
+<blockquote>
+<div><p>GRAVATAR_DEFAULT_URL = ‘identicon’  # Choose any one of the above</p>
+</div></blockquote>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">dj-gravatar</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Usage</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="index.html" title="previous chapter">Welcome to dj-gravatar’s documentation!</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2021, PhysicistSouravDas.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.2.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/usage.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
