@@ -2,6 +2,9 @@
 .venv
 .vscode
 build
+*_build/
+*_static
+*_templates
 dist
 dj_gravatar.egg-info
-requirements.txt
+/requirements.txt
